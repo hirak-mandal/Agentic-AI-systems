@@ -2,7 +2,7 @@ from pydantic import BaseModel,model_validator
 from typing import Optional,Literal
 
 class Agent(BaseModel):
-    tool: Optional[Literal["weather","sports"]]
+    tool: Optional[Literal["weather","sports"]]=None
     final_answer: Optional[str]=None
     input: Optional[str]=None
 
@@ -19,6 +19,3 @@ class Agent(BaseModel):
         elif tool_exists is not None and input_exists is None:
             raise ValueError("Tool exists, then input must exist")
         return self
-
-valid_user=Agent({"tool": "weather", "input": "Kolkata"})
-print(valid_user)
