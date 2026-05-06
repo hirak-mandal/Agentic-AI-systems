@@ -4,7 +4,7 @@ from google import genai
 from dotenv import load_dotenv
 from app.prompts import system_prompt
 from app.model import Agent
-
+from app.tools import weather,sports
 #loading system environment variables
 load_dotenv()
 
@@ -31,18 +31,42 @@ def parse_decision(response_text):
     data=json.loads(response_text)
     return data
 
-#response validation
-def data_validation(data):
-    return Agent.model_validate_json(data)
 
 #agent loop
-step=0
-max_iteration=5
-while True:
-    step+=1
-    llm_output=get_llm_decision()
-    structured_output=parse_decision(llm_output)
-    decision=data_validation(structured_output)
-    if step > max_iteration:
-        break
+def run_agent(query):
+    step=0
+    max_iteration=5
+    while True:
+        step+=1
+        #LLM call
+        try:
+            llm_output=get_llm_decision(query)
+        except Exception as e:
+            print(f"Error in LLM call: {e}")
+            continue
+        #json parsing
+        try:
+            structured_output=parse_decision(llm_output)
+        except Exception as e:
+            print(f"Error in json parsing: {e}")
+            continue
+        #data validation
+        try:
+            decision=Agent(**structured_output)
+            print(decision)
+        except Exception as e:
+            print(f"Invalid data: {e}")
+
+        if decision.tool:
+                if decision.tool=="weather":
+                    return weather(decision.input)
+                elif decision.tool=="sports":
+                    return sports(decision.input)
+             
+        if decision.final_answer:
+            print("\nAnswer:",decision.final_answer)
+            break
+
+        if step > max_iteration:
+            break
     
