@@ -1,0 +1,6 @@
+python version 3.14+
+os for environment variables
+json for parsing
+genai for LLM calls
+dotenv for managing environment variables
+pydantic for data validation
