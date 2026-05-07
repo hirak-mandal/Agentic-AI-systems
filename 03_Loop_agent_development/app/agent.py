@@ -19,10 +19,10 @@ if not api_key:
 client=genai.Client(api_key=api_key)
 
 #LLM Call
-def get_llm_decision(query):
+def get_llm_decision(query,history):
     request=client.models.generate_content(
         model="gemini-1.5-flash",
-        contents=system_prompt + "\nuser query:" + query
+        contents=system_prompt + "\nuser query:" + query + "\nHistory:" + history
     )
     return request.text
 
@@ -36,11 +36,12 @@ def parse_decision(response_text):
 def run_agent(query):
     step=0
     max_iteration=5
+    history=""
     while True:
         step+=1
         #LLM call
         try:
-            llm_output=get_llm_decision(query)
+            llm_output=get_llm_decision(query,history)
         except Exception as e:
             print(f"Error in LLM call: {e}")
             continue
@@ -56,16 +57,23 @@ def run_agent(query):
             print(decision)
         except Exception as e:
             print(f"Invalid data: {e}")
+            continue
 
         if decision.tool:
                 if decision.tool=="weather":
-                    return weather(decision.input)
+                    tool_result=weather(decision.input)
                 elif decision.tool=="sports":
-                    return sports(decision.input)
-             
+                    tool_result=sports(decision.input)
+                #appending history for better context in next iteration
+                history+=f"""
+                Thought: {decision.hought}
+                Action: {decision.tool}
+                Observation: {tool_result} 
+                """
+                continue
+        
         if decision.final_answer:
-            print("\nAnswer:",decision.final_answer)
-            break
+            return decision.final_answer
 
         if step > max_iteration:
             break
