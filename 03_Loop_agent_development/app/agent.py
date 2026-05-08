@@ -66,7 +66,7 @@ def run_agent(query):
                     tool_result=sports(decision.input)
                 #appending history for better context in next iteration
                 history+=f"""
-                Thought: {decision.hought}
+                Thought: {decision.thought}
                 Action: {decision.tool}
                 Observation: {tool_result} 
                 """
