@@ -1,0 +1,19 @@
+Newton's First Law states that a body remains at rest or in uniform motion unless acted upon by an external force.
+
+Force is defined as the product of mass and acceleration according to Newton's Second Law.
+
+The SI unit of force is Newton.
+
+Velocity is a vector quantity because it has both magnitude and direction.
+
+Acceleration is the rate of change of velocity with time.
+
+Gravitational force attracts objects toward the center of the Earth.
+
+Work is said to be done when force causes displacement.
+
+Power is the rate of doing work.
+
+Kinetic energy depends on the mass and velocity of an object.
+
+Potential energy is stored energy due to position or configuration.
