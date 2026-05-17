@@ -19,7 +19,8 @@ STYLE:
 3. Concise & accurate
 
 OUTPUT:
-- Return clean valid JSON response.
+- Return only a clean natural language answer.
+- Do not use JSON formatting.
 
 EXAMPLE:
 {
